@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="css/styles.css">
+  <title>Document</title>
+</head>
+
+<body>
+  <header>
+    <nav class="hidden-nav"></nav>
+    <script src="https://fastly.jsdelivr.net/npm/live2d-widgets@1.0.0-rc.4/dist/autoload.js"></script>
+  </header>
+
+  <main>
+    <section id="login-section">
+      <h1>ME Blog</h1>
+      <form class="login-form">
+        <div class="input-group">
+          <label for="username">用户名</label>
+          <input type="text" name="username" id="username" placeholder="请输入用户名" required>
+        </div>
+        <div class="input-group">
+          <label for="password">密码</label>
+          <input type="password" name="password" id="password" placeholder="请输入密码" required>
+        </div>
+        <button type="submit">登陆</button>
+      </form>
+      <p>没有账号？<a href="register.html">去注册</a></p>
+    </section>
+  </main>
+
+  <footer>EM Blog Welcome</footer>
+  <script src="js/login.js"></script>
+</body>
+</html>

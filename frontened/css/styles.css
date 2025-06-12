@@ -1,0 +1,124 @@
+html {
+  background-image: url(../images/background.jpg);
+  /* 使用相对路径 */
+  background-size: cover;
+  /* 确保背景图片覆盖整个页面 */
+  background-position: center;
+  /* 背景图片居中显示 */
+  background-repeat: no-repeat;
+  /* 防止背景图片重复 */
+  height: 100vh;
+  /* 确保背景覆盖整个屏幕 */
+}
+
+/* 全局样式 */
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+/* Header 样式 */
+header {
+  background-color: #FFC0CB;
+  /* 背景颜色 */
+  color: white;
+  padding: 20px;
+  text-align: center;
+}
+
+
+/* Main 样式，适用于登录页面和注册页面 */
+main {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 80vh;
+  /* 使 main 部分占据大部分页面高度 */
+  padding: 20px;
+
+  border-radius: 8px;
+  /* 可以添加圆角来更美观 */
+}
+
+/* Footer 样式 */
+footer {
+  color: black;
+  padding: 10px;
+  text-align: center;
+  position: fixed;
+  width: 100%;
+  bottom: 0;
+}
+
+
+
+/* 登录和注册表单样式 */
+#login-section {
+  background-color: rgba(255, 255, 255, 0.7);
+  /* 使背景颜色半透明 */
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  width: 100%;
+  max-width: 400px;
+  box-sizing: border-box;
+}
+
+#login-section h1 {
+  font-size: 24px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.input-group {
+  margin-bottom: 15px;
+  display: flex;
+  flex-direction: column;
+}
+
+.input-group label {
+  font-size: 14px;
+  color: #333;
+  margin-bottom: 5px;
+  /* 添加间距 */
+}
+
+.input-group input {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  margin-top: 5px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  box-sizing: border-box;
+    background-color: rgba(255, 255, 255, 0.7);
+}
+
+/* 按钮样式 */
+button {
+  width: 100%;
+  padding: 12px;
+  background-color: #FFC0CB;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  margin-top: 10px;
+  /* 添加间距 */
+}
+
+button:hover {
+  background-color: #E91E63;
+}
+
+/* 链接样式 */
+p a {
+  color: #007bff;
+  text-decoration: none;
+}
+
+p a:hover {
+  text-decoration: underline;
+}
