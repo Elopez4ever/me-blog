@@ -1,8 +1,10 @@
 package com.backend.controller;
 
+import com.backend.dto.UserDTO;
+import com.backend.entity.Result;
 import com.backend.entity.User;
+import com.backend.service.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -14,55 +16,58 @@ import java.io.IOException;
 @WebServlet("/login")
 public class LoginController extends HttpServlet {
 
-    @Override
-    protected void doOptions(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        // 设置 CORS 响应头，允许跨域请求
-        resp.setHeader("Access-Control-Allow-Origin", "*");
-        resp.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS"); // 允许的 HTTP 方法
-        resp.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization, X-Requested-With"); // 允许的请求头部
-        resp.setHeader("Access-Control-Allow-Credentials", "true"); // 是否允许发送 cookies
-
-        resp.setStatus(HttpServletResponse.SC_OK); // 返回 200 状态码
-    }
-
+    private final UserService userService = new UserService();
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.setCharacterEncoding("UTF-8");
-        resp.setContentType("application/json; charset=UTF-8");
-
-        // 设置 CORS 响应头，允许跨域请求
-        resp.setHeader("Access-Control-Allow-Origin", "*");
-        resp.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS"); // 允许的 HTTP 方法
-        resp.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization, X-Requested-With"); // 允许的请求头部
-        resp.setHeader("Access-Control-Allow-Credentials", "true"); // 是否允许发送 cookies
-
-
-        // 获取请求体数据
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        // 获取请求体 JSON
         StringBuilder requestBody = new StringBuilder();
+        ObjectMapper objectMapper = new ObjectMapper();
+
+        // 读取请求体内容
+        String line;
         try (BufferedReader reader = req.getReader()) {
-            String line;
             while ((line = reader.readLine()) != null) {
                 requestBody.append(line);
             }
         } catch (IOException e) {
             resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            resp.getWriter().write("{\"error\": \"Invalid request body\"}");
+            resp.getWriter().write(
+                    objectMapper.writeValueAsString(
+                            new Result<>(HttpServletResponse.SC_BAD_REQUEST, "请求体解析失败", null))
+            );
             return;
         }
 
-        // 解析请求体数据
-        ObjectMapper objectMapper = new ObjectMapper();
+        // 解析 JSON
+        User inputUser;
         try {
-            User user = objectMapper.readValue(requestBody.toString(), User.class);
-
-            // 打印输出解析后的数据
-            System.out.println("Username: " + user.getUsername());
-            System.out.println("Password: " + user.getPassword());
-            // 返回响应
-            resp.getWriter().write("{\"message\": \"Login successful\"}");
+            inputUser = objectMapper.readValue(requestBody.toString(), User.class);
         } catch (Exception e) {
-            resp.getWriter().write("{\"error\": \"Failed to parse request body\"}");
+            resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            resp.getWriter().write(
+                    objectMapper.writeValueAsString(
+                            new Result<>(HttpServletResponse.SC_BAD_REQUEST, "请求体格式错误", null))
+            );
+            return;
+        }
+
+        // 登陆验证逻辑
+        User user = userService.login(inputUser);
+        if (user != null) {
+            // 登录成功，返回用户信息
+            resp.setStatus(HttpServletResponse.SC_OK);
+            resp.getWriter().write(
+                    objectMapper.writeValueAsString(
+                            new Result<>(HttpServletResponse.SC_OK, "登录成功", new UserDTO(user)))
+            );
+        } else {
+            // 登录失败，返回错误信息
+            resp.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            resp.getWriter().write(
+                    objectMapper.writeValueAsString(
+                            new Result<>(HttpServletResponse.SC_UNAUTHORIZED, "用户名或密码错误", null))
+            );
         }
     }
 }
