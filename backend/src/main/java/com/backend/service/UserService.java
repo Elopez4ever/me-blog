@@ -1,6 +1,6 @@
 package com.backend.service;
 
-import com.backend.Exception.AppException;
+import com.backend.exception.AppException;
 import com.backend.entity.User;
 import com.backend.util.BCryptUtil;
 import com.backend.util.DBUtil;
@@ -13,6 +13,7 @@ public class UserService {
 
     public User login(User inputUser) {
         String sql = "SELECT * FROM user WHERE username = ?";
+        System.out.println(BCryptUtil.hash(inputUser.getPassword())); // 打印加密后的密码，调试用
 
         try (Connection connection = DBUtil.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(sql)) {

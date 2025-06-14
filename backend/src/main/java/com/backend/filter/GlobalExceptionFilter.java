@@ -1,6 +1,6 @@
 package com.backend.filter;
 
-import com.backend.Exception.AppException;
+import com.backend.exception.AppException;
 import com.backend.entity.Result;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
